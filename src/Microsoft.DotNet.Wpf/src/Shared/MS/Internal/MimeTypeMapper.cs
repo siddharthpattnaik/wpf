@@ -76,6 +76,10 @@ namespace MS.Internal
         {
             ContentType mimeType = ContentType.Empty;
 
+            // UPF: urlmon's FindMimeFromData (and its IBindCtx parameter's COM marshalling) is not available: the extensions urlmon maps
+            if (uriSource != null)
+                return global::Upf.Win32.UpfMimeTypes.FromExtension(Path.GetExtension(BindUriHelper.UriToString(uriSource))) is string upfMime ? new ContentType(upfMime) : ContentType.Empty;
+
             if (uriSource != null)
             {
                 int retValue;

@@ -74,6 +74,9 @@ namespace MS.Internal.Drt
 
          internal static int MapUrlToZoneWrapper(Uri uri)
          {
+              // UPF: urlmon's IInternetSecurityManager is COM (an RCW; no urlmon or built-in COM off Windows): the zone from the URI
+              if (uri is not null)
+                  return uri.IsFile ? (uri.IsUnc ? NativeMethods.URLZONE_INTRANET : NativeMethods.URLZONE_LOCAL_MACHINE) : NativeMethods.URLZONE_INTERNET;
               int targetZone = NativeMethods.URLZONE_LOCAL_MACHINE ; // fail securely this is the most priveleged zone
               int hr = NativeMethods.S_OK ;
               object curSecMgr = null;

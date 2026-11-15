@@ -568,9 +568,8 @@ namespace System.Windows.Media.Imaging
                 if (_wicSource == null || _wicSource.IsInvalid)
                 {
                     ManagedBitmapSource managedBitmapSource = new ManagedBitmapSource(this);
-                    _wicSource = new BitmapSourceSafeMILHandle(Marshal.GetComInterfaceForObject(
-                            managedBitmapSource,
-                            typeof(System.Windows.Media.Imaging.BitmapSource.IWICBitmapSource)));
+                    // UPF: no built-in COM interop (Marshal.GetComInterfaceForObject); Upf.Imaging gives the managed source an interface pointer
+                    _wicSource = new BitmapSourceSafeMILHandle(global::Upf.Imaging.ManagedBitmapSources.Create(new UpfManagedBitmapSourceAdapter(managedBitmapSource)));
                 }
 
                 return _wicSource;
