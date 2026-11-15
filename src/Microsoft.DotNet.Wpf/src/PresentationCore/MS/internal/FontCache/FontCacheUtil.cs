@@ -299,9 +299,10 @@ namespace MS.Internal.FontCache
 
         static Util()
         {
-            string s = Environment.GetEnvironmentVariable(WinDir) + @"\Fonts\";
+            // UPF: %WINDIR%\Fonts exists only on Windows; elsewhere Upf.Text names the platform font directory (not upper-cased: case-sensitive file systems).
+            string s = OperatingSystem.IsWindows() ? Environment.GetEnvironmentVariable(WinDir) + @"\Fonts\" : MS.Internal.Text.TextInterface.Factory.SystemFontsDirectory;
 
-            _windowsFontsLocalPath = s.ToUpperInvariant();
+            _windowsFontsLocalPath = OperatingSystem.IsWindows() ? s.ToUpperInvariant() : s; // UPF
 
             _windowsFontsUriObject = new Uri(_windowsFontsLocalPath, UriKind.Absolute);
 
