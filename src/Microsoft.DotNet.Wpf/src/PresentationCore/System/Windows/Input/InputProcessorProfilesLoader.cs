@@ -53,7 +53,7 @@ namespace System.Windows.Input
         {
             UnsafeNativeMethods.ITfInputProcessorProfiles obj;
 
-            Debug.Assert(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA, "Load called on MTA thread!");
+            Debug.Assert(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA, "Load called on MTA thread!"); // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
 
             if (UnsafeNativeMethods.TF_CreateInputProcessorProfiles(out obj) == NativeMethods.S_OK)
             {

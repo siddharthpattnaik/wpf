@@ -26,7 +26,7 @@ namespace MS.Internal
         /// </exception>
         public static void IsApartmentState(ApartmentState requiredState)
         {
-            if (Thread.CurrentThread.GetApartmentState() != requiredState)
+            if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != requiredState) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
             {
                 throw new InvalidOperationException(SR.Format(SR.Verify_ApartmentState, requiredState));
             }

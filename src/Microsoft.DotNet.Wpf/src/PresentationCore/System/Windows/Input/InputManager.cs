@@ -139,7 +139,7 @@ namespace System.Windows.Input
             // Avalon doesn't necessarily require STA, but many components do.  Examples
             // include Cicero, OLE, COM, etc.  So we throw an exception here if the
             // thread is not STA.
-            if(Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+            if(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
             {
                 throw new InvalidOperationException(SR.RequiresSTA);
             }

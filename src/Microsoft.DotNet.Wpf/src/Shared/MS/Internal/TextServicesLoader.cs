@@ -93,7 +93,7 @@ namespace MS.Internal
         {
             UnsafeNativeMethods.ITfThreadMgr threadManager;
             
-            Invariant.Assert(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA, "Load called on MTA thread!");
+            Invariant.Assert(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA, "Load called on MTA thread!"); // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
 
             if (ServicesInstalled)
             {

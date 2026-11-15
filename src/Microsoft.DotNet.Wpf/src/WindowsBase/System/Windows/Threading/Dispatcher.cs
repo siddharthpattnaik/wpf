@@ -2155,7 +2155,7 @@ namespace System.Windows.Threading
             {
                 // If the current thread is not STA, Cicero just does not work.
                 // Probably this Dispatcher is running for worker thread.
-                if (Thread.CurrentThread.GetApartmentState() == ApartmentState.STA)
+                if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
                 {
                     // If there is no text services, we don't have to use ITfMessagePump.
                     if (TextServicesLoader.ServicesInstalled)
@@ -2202,6 +2202,7 @@ namespace System.Windows.Threading
             {
                 UnsafeNativeMethods.TranslateMessage(ref msg);
                 UnsafeNativeMethods.DispatchMessage(ref msg);
+                global::Upf.Win32.Win32Host.ThrowPendingException(); // UPF: rethrow a window-procedure exception that could not unwind through the Win32 shim
             }
         }
 

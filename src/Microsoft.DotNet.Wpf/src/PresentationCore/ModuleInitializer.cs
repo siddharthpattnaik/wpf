@@ -22,12 +22,12 @@ internal static class ModuleInitializer
     {
         IsProcessDpiAware();
 
-        DWriteLoader.LoadDWrite();
-
-        AppDomain.CurrentDomain.ProcessExit += static (object sender, EventArgs e) =>
-        {
-            DWriteLoader.UnloadDWrite();
-        };
+        // UPF: DirectWrite is never loaded - NativeLibrary.Load(name, assembly, path) bypasses the UPF
+        // DllImportResolver, so this would load the real dwrite.dll on Windows (no-fallback rule) and throw
+        // on Linux/macOS. Text is Upf.Text's (Phase 3.1); the DWrite factory pointer stays null and
+        // Factory.Initialize fails in Upf.Text's DWriteTypeConverter before it could be called.
+        // DWriteLoader.LoadDWrite();
+        // AppDomain.CurrentDomain.ProcessExit += static (object sender, EventArgs e) => DWriteLoader.UnloadDWrite();
 
         MS.Internal.NativeWPFDLLLoader.LoadDwrite();
     }

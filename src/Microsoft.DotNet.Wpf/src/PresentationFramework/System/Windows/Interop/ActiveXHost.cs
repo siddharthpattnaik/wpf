@@ -80,7 +80,7 @@ namespace System.Windows.Interop
         internal ActiveXHost(Guid clsid, bool fTrusted ) : base( fTrusted )
         {
             // What if the control is marked as free-threaded?
-            if (Thread.CurrentThread.GetApartmentState() is not ApartmentState.STA)
+            if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState is not ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
             {
                 throw new ThreadStateException(SR.Format(SR.AxRequiresApartmentThread, clsid.ToString()));
             }

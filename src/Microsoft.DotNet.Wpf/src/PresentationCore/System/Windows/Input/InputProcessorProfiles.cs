@@ -32,7 +32,7 @@ namespace System.Windows.Input
         /// </summary>
         internal bool Initialize(object o)
         {
-            Debug.Assert(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA, "Initialize called on MTA thread!");
+            Debug.Assert(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA, "Initialize called on MTA thread!"); // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
 
             Debug.Assert(_ipp == null, "Initialize called twice");
 

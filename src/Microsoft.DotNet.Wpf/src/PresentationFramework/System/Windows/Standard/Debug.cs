@@ -335,7 +335,7 @@ namespace Standard
         [Conditional("DEBUG")]
         public static void IsApartmentState(ApartmentState expectedState)
         {
-            if (Thread.CurrentThread.GetApartmentState() != expectedState)
+            if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != expectedState) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
             {
                 _Break();
             }

@@ -12,7 +12,7 @@ namespace MS.Internal
     /// </summary>
     internal static class Utilities
     {
-        private static readonly Version _osVersion = Environment.OSVersion.Version;
+        private static readonly Version _osVersion = new Version(10, 0); // UPF: WPF runs on UPF's emulated Win32 (Windows 10, as presentationnative_cor3's IsWindows10*OrGreater), never the host OS version (Linux/macOS kernel versions would make these checks accidental)
 
         internal static bool IsOSVistaOrNewer
         {

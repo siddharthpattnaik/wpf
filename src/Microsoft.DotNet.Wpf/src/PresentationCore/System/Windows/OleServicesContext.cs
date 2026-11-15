@@ -86,7 +86,7 @@ internal class OleServicesContext
         int allowedEffects,
         int[] finalEffect)
     {
-        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
         {
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
@@ -109,7 +109,7 @@ internal class OleServicesContext
     /// </summary>
     internal int OleRegisterDragDrop(HandleRef windowHandle, UnsafeNativeMethods.IOleDropTarget dropTarget)
     {
-        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
         {
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
@@ -122,7 +122,7 @@ internal class OleServicesContext
     /// </summary>
     internal int OleRevokeDragDrop(HandleRef windowHandle)
     {
-        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
         {
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
@@ -138,7 +138,7 @@ internal class OleServicesContext
     {
         int hr;
 
-        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
         {
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
@@ -169,7 +169,7 @@ internal class OleServicesContext
     /// </remarks>
     private void OnDispatcherShutdown(object sender, EventArgs args)
     {
-        if (Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+        if (global::Upf.Win32.UpfApartment.CurrentThreadApartmentState != ApartmentState.STA) // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
         {
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }

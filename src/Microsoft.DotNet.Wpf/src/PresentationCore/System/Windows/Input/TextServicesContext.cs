@@ -43,7 +43,7 @@ namespace System.Windows.Input
         /// </summary>
         private TextServicesContext()
         {
-            Debug.Assert(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA, "SetDispatcherThreaad on MTA thread");
+            Debug.Assert(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA, "SetDispatcherThreaad on MTA thread"); // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
 
             // We will clean up Cicero's resource when Dispatcher is terminated or
             // when AppDomain is unloaded.

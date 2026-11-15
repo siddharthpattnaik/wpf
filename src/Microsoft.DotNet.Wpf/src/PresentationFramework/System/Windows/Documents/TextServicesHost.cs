@@ -58,7 +58,7 @@ namespace System.Windows.Documents
         {
             // VerifyAccess();
 
-            Debug.Assert(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA, "OnRegisterTextStore must be called on STA thread");
+            Debug.Assert(global::Upf.Win32.UpfApartment.CurrentThreadApartmentState == ApartmentState.STA, "OnRegisterTextStore must be called on STA thread"); // UPF: apartment via UpfApartment (STA for designated UI threads off-Windows)
 
             // Register textstore and advise sinks.
             _RegisterTextStore((TextStore)textstore);
