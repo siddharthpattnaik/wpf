@@ -238,7 +238,9 @@ namespace MS.Internal.TextFormatting
             if (textLine == null)
             {
                 // content is complex, creating complex line
-                textLine = new TextMetrics.FullTextLine(
+                textLine = TextMetrics.UpfTextLine.Enabled // UPF: managed line engine instead of LineServices (WP 3.1f)
+                    ? new TextMetrics.UpfTextLine(settings, firstCharIndex, lineLength, RealToIdealFloor(paragraphWidth), LineFlags.None)
+                    : new TextMetrics.FullTextLine(
                     settings,
                     firstCharIndex,
                     lineLength,
@@ -305,6 +307,14 @@ namespace MS.Internal.TextFormatting
                 _textFormattingMode
                 );
 
+            if (TextMetrics.UpfTextLine.Enabled) // UPF: managed line engine instead of LineServices (WP 3.1f)
+            {
+                TextMetrics.UpfTextLine upfLine = new TextMetrics.UpfTextLine(settings, firstCharIndex, 0, 0, (LineFlags.KeepState | LineFlags.MinMax));
+                MinMaxParagraphWidth upfMinMax = new MinMaxParagraphWidth(upfLine.MinWidth, upfLine.Width);
+                upfLine.Dispose();
+                return upfMinMax;
+            }
+
             // create specialized line specifically for min/max calculation
             TextMetrics.FullTextLine line = new TextMetrics.FullTextLine(
                 settings,
@@ -354,6 +364,9 @@ namespace MS.Internal.TextFormatting
             TextRunCache                textRunCache
             )
         {
+            if (TextMetrics.UpfTextLine.Enabled) // UPF: no LineServices paragraph breaking session (WP 3.1j)
+                throw TextMetrics.UpfTextLine.NotSupported("optimal paragraph formatting (TextFormatter.CreateParagraphCache)", "3.1j");
+
             // prepare formatting settings
             FormatSettings settings = PrepareFormatSettings(
                 textSource,

@@ -520,7 +520,9 @@ namespace MS.Internal.TextFormatting
             Invariant.Assert(_settings != null);
 
             // instantiate a collapsible full text line, collapse it and return the collapsed line
-            TextMetrics.FullTextLine textLine = new TextMetrics.FullTextLine(
+            TextLine textLine = TextMetrics.UpfTextLine.Enabled // UPF: managed line engine instead of LineServices (WP 3.1f)
+                ? new TextMetrics.UpfTextLine(_settings, _cpFirst, 0, TextFormatterImp.RealToIdeal(_paragraphWidth), LineFlags.None)
+                : new TextMetrics.FullTextLine(
                 _settings,
                 _cpFirst,
                 0,  // lineLength
