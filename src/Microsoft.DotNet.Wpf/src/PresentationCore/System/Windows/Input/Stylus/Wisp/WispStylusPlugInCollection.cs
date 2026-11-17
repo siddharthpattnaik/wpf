@@ -75,7 +75,8 @@ namespace System.Windows.Input.StylusWisp
                         if (_penContexts == null)
                         {
                             InputManager inputManager = (InputManager)element.Dispatcher.InputManager;
-                            PenContexts penContexts = StylusLogic.GetCurrentStylusLogicAs<WispLogic>().GetPenContextsFromHwnd(presentationSource);
+                            // UPF: no WispLogic when DisableStylusAndTouchSupport is set (UPF sets it): no pen contexts instead of a NullReferenceException
+                            PenContexts penContexts = StylusLogic.GetCurrentStylusLogicAs<WispLogic>()?.GetPenContextsFromHwnd(presentationSource);
 
                             // _penContexts must be non null or don't do anything.
                             if (penContexts != null)
