@@ -96,7 +96,8 @@ internal class OleServicesContext
 
         try
         {
-            UnsafeNativeMethods.DoDragDrop(dataObject, dropSource, allowedEffects, finalEffect);
+            int hr = global::Upf.Win32.UpfOle.DoDragDrop(dataObject, new UpfOleDropSourceAdapter(dropSource), allowedEffects, out finalEffect[0]); // UPF: managed OLE drag loop (Upf.Win32), no COM marshalling
+            if (hr < 0) Marshal.ThrowExceptionForHR(hr, (IntPtr)(-1)); // UPF: as the PreserveSig=false import did (no IErrorInfo lookup)
         }
         finally
         {
@@ -114,7 +115,7 @@ internal class OleServicesContext
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
 
-        return UnsafeNativeMethods.RegisterDragDrop(windowHandle, dropTarget);
+        return global::Upf.Win32.UpfOle.RegisterDragDrop(windowHandle.Handle, new UpfOleDropTargetAdapter(dropTarget)); // UPF: managed drop-target registry (Upf.Win32), no COM marshalling
     }
 
     /// <summary>
@@ -127,7 +128,7 @@ internal class OleServicesContext
             throw new ThreadStateException(SR.OleServicesContext_ThreadMustBeSTA);
         }
 
-        return UnsafeNativeMethods.RevokeDragDrop(windowHandle);
+        return global::Upf.Win32.UpfOle.RevokeDragDrop(windowHandle.Handle); // UPF: managed drop-target registry (Upf.Win32)
     }
 
     /// <summary>
