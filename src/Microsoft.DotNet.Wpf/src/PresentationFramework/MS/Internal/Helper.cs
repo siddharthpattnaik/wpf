@@ -588,7 +588,11 @@ namespace MS.Internal
                     // This is the DependencyProperty case
 
                     targetDependencyObject = targetObject as DependencyObject;
-                    Debug.Assert(targetDependencyObject != null, "DependencyProperties can only be set on DependencyObjects");
+                    // UPF: upstream Debug.Asserts targetDependencyObject != null here. TemplateContent.TrySharingValue calls a custom
+                    // MarkupExtension's ProvideValue with its sharing wrapper, whose target is not a DependencyObject; an extension that
+                    // delegates to Binding.ProvideValue (Syncfusion's ThemeResourceExtension in Syncfusion.SfChat.WPF's templates) gets
+                    // here. Stock (Release) WPF has no assert and its callers handle the null target (BindingBase returns itself); the
+                    // Debug-built fork must not end the process on it (WP 5.3, SfAIAssistView).
                 }
                 else
                 {
