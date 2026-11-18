@@ -396,6 +396,19 @@ namespace System.Windows.Media.TextFormatting
 
         internal static bool IsSpecialCharacter(char c)
         {
+            // UPF (WP 3.1h): the managed line engine (UpfTextLine) creates no LineServices context, where this set is recorded;
+            // Display-mode unshaped widths (TextShapeableCharacters) ask for it. The same characters as Init's text configuration
+            // (wchPad is never set: U+0000).
+            if (_specialCharacters == null)
+            {
+                Dictionary<char,bool> dict = new Dictionary<char,bool>();
+                foreach (int special in new int[] { 0x0000, 0x002D, 0x0009, 0x2029, 0x2028, 0x00A0, 0x2011, 0x00AD, 0x2014, 0x2013, 0x2003, 0x2002, 0x2009, 0x3000, 0x200D, 0x200C,
+                                                    0x2050, 0x2051, 0x2052, 0x2053, 0x2054, 0x2055, 0x2056, 0x2057, 0x2058, 0x2059, 0x205A, 0x205B, 0x205C, 0x205D, 0x205E })
+                {
+                    dict[(char)special] = true;
+                }
+                System.Threading.Interlocked.CompareExchange<Dictionary<char,bool>>(ref _specialCharacters, dict, null);
+            }
             return _specialCharacters.ContainsKey(c);
         }
 
